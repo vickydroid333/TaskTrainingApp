@@ -14,8 +14,7 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+      contentPadding: const EdgeInsets.only(bottom: 10),
       leading: Checkbox(
         value: task.isCompleted,
         onChanged: onChanged,

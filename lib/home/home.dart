@@ -17,6 +17,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.index = 1;
     super.initState();
   }
 
@@ -137,23 +138,34 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
                   child: Column(
                     children: [
-                      TabBar(
-                        controller: _tabController,
-                        indicatorColor: Colors.red,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        tabs: const [
-                          Tab(icon: Icon(Icons.star_border)),
-                          Tab(text: "My Tasks"),
-                          Tab(text: "Completed Tasks"),
-                        ],
-                        indicatorPadding:
-                            EdgeInsets.zero, // Remove default padding
-                        labelPadding: EdgeInsets.zero, // Remove label padding
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: 48, // Set a fixed height for the TabBar
+                          child: TabBar(
+                            controller: _tabController,
+                            indicatorColor: Colors.red,
+                            labelColor: Colors.black,
+                            dividerColor: Colors.white,
+                            unselectedLabelColor: Colors.grey,
+                            tabs: const [
+                              Tab(
+                                icon: Icon(Icons.star_border),
+                              ),
+                              Tab(
+                                text: "My Tasks",
+                              ),
+                              Tab(
+                                text: "Completed Tasks",
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16),
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
                           child: TabBarView(
                             controller: _tabController,
                             children: const [
