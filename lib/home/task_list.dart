@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:task_app/home/task_data_class.dart';
 import 'package:task_app/home/task_item.dart';
+import 'package:task_app/task.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
@@ -11,23 +11,38 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   final List<Task> tasks = [
-    Task(title: 'Buy eggs and bread for breakfast', isStarred: false),
-    Task(title: 'Pay college tuition fee', isStarred: false),
+    /*Task(
+        title: 'Buy eggs and bread for breakfast',
+        isStarred: false,
+        dateTime: DateTime.parse('')),
+    Task(
+        title: 'Pay college tuition fee',
+        isStarred: false,
+        dateTime: DateTime.parse('')),
     Task(
         title: 'Plan to book the party hall for birthday',
         isStarred: false,
-        hasDateTime: true),
-    Task(title: 'Visit granny before Christmas', isStarred: true),
+        dateTime: DateTime.parse('formattedString')),
+    Task(
+        title: 'Visit granny before Christmas',
+        isStarred: true,
+        dateTime: DateTime.parse('formattedString')),
     Task(
         title: 'Book flight tickets for San Diego before the offer ends',
         isStarred: false,
-        hasDateTime: true),
-    Task(title: 'Buy eggs and bread for breakfast', isStarred: true),
-    Task(title: 'Pay college tuition fee', isStarred: true),
+        dateTime: DateTime.parse('formattedString')),
+    Task(
+        title: 'Buy eggs and bread for breakfast',
+        isStarred: true,
+        dateTime: DateTime.parse('formattedString')),
+    Task(
+        title: 'Pay college tuition fee',
+        isStarred: true,
+        dateTime: DateTime.parse('formattedString')),
     Task(
         title: 'Plan to book the party hall for birthday',
         isStarred: false,
-        hasDateTime: true),
+        dateTime: DateTime.parse('formattedString')),*/
   ];
 
   @override
@@ -39,7 +54,7 @@ class _TaskListState extends State<TaskList> {
           task: tasks[index],
           onChanged: (bool? value) {
             setState(() {
-              tasks[index].isCompleted = value ?? false;
+              // tasks[index].isCompleted = value ?? false;
             });
           },
         );

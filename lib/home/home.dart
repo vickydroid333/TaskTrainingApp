@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/home/task_list.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../add_task.dart';
+import '../task_detail.dart';
+import '../task_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -66,8 +69,7 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(
-                          'assets/images/images.jpg'), // Replace with your image asset
+                      backgroundImage: AssetImage('assets/images/images.jpg'),
                       radius: 30,
                     ),
                     SizedBox(width: 16),
@@ -81,7 +83,9 @@ class _MyHomePageState extends State<MyHomePage>
                         Text(
                           'Bernice Thompson!',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -139,27 +143,18 @@ class _MyHomePageState extends State<MyHomePage>
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: SizedBox(
-                          height: 48, // Set a fixed height for the TabBar
-                          child: TabBar(
-                            controller: _tabController,
-                            indicatorColor: Colors.red,
-                            labelColor: Colors.black,
-                            dividerColor: Colors.white,
-                            unselectedLabelColor: Colors.grey,
-                            tabs: const [
-                              Tab(
-                                icon: Icon(Icons.star_border),
-                              ),
-                              Tab(
-                                text: "My Tasks",
-                              ),
-                              Tab(
-                                text: "Completed Tasks",
-                              ),
-                            ],
-                          ),
+                        padding: const EdgeInsets.only(right: 8, top: 8),
+                        child: TabBar(
+                          controller: _tabController,
+                          indicatorColor: Colors.red,
+                          labelColor: Colors.black,
+                          dividerColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          tabs: const [
+                            Tab(icon: Icon(Icons.star_border)),
+                            Tab(text: "My Tasks"),
+                            Tab(text: "Completed Tasks"),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -168,10 +163,334 @@ class _MyHomePageState extends State<MyHomePage>
                               const EdgeInsets.only(left: 16.0, right: 16.0),
                           child: TabBarView(
                             controller: _tabController,
-                            children: const [
-                              Center(child: Text('Starred Tasks')),
-                              TaskList(),
-                              Center(child: Text('Completed Tasks')),
+                            children: [
+                              Consumer<TaskProvider>(
+                                builder: (context, taskProvider, _) {
+                                  final tasks = taskProvider.starredTasks;
+                                  if (tasks.isEmpty) {
+                                    return const Center(
+                                      child: Text('No starred tasks available'),
+                                    );
+                                  }
+                                  return ListView.builder(
+                                    itemCount: tasks.length,
+                                    itemBuilder: (context, index) {
+                                      final task = tasks[index];
+                                      return ListTile(
+                                        leading: Checkbox(
+                                          value: task.isCompleted,
+                                          onChanged: (bool? value) {
+                                            if (value != null) {
+                                              taskProvider.toggleTaskCompletion(
+                                                  index, task);
+                                            }
+                                          },
+                                        ),
+                                        title: Text(task.title),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                        subtitle: task.dateTime != null
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.calendar_today,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'dd MMM, yyyy')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8.0),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.access_time,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'hh:mm a')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : null,
+                                        trailing: IconButton(
+                                          icon: Icon(
+                                            task.isStarred ?? false
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            color: task.isStarred ?? false
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            taskProvider.toggleTaskStarred(
+                                                index, task);
+                                          },
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TaskDetailsPage(task: task),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              Consumer<TaskProvider>(
+                                builder: (context, taskProvider, _) {
+                                  final tasks = taskProvider.tasks;
+                                  if (tasks.isEmpty) {
+                                    return const Center(
+                                        child: Text('No tasks available'));
+                                  }
+                                  return ListView.builder(
+                                    itemCount: tasks.length,
+                                    itemBuilder: (context, index) {
+                                      final task = tasks[index];
+                                      return ListTile(
+                                        leading: Checkbox(
+                                          value: task.isCompleted,
+                                          onChanged: (bool? value) {
+                                            if (value != null) {
+                                              taskProvider.toggleTaskCompletion(
+                                                  index, task);
+                                            }
+                                          },
+                                        ),
+                                        title: Text(task.title),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                        subtitle: task.dateTime != null
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.calendar_today,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'dd MMM, yyyy')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8.0),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.access_time,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'hh:mm a')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : null,
+                                        trailing: IconButton(
+                                          icon: Icon(
+                                            task.isStarred ?? false
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            color: task.isStarred ?? false
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            taskProvider.toggleTaskStarred(
+                                                index, task);
+                                          },
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TaskDetailsPage(task: task),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              Consumer<TaskProvider>(
+                                builder: (context, taskProvider, _) {
+                                  final completedTasks =
+                                      taskProvider.completedTasks;
+                                  if (completedTasks.isEmpty) {
+                                    return const Center(
+                                        child: Text(
+                                            'No completed tasks available'));
+                                  }
+                                  return ListView.builder(
+                                    itemCount: completedTasks.length,
+                                    itemBuilder: (context, index) {
+                                      final task = completedTasks[index];
+                                      return ListTile(
+                                        leading: Checkbox(
+                                          value: task.isCompleted,
+                                          onChanged: (bool? value) {
+                                            if (value != null) {
+                                              taskProvider.toggleTaskCompletion(
+                                                  index, task);
+                                            }
+                                          },
+                                        ),
+                                        title: Text(task.title),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                        subtitle: task.dateTime != null
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.calendar_today,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'dd MMM, yyyy')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8.0),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.access_time,
+                                                          size: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4.0),
+                                                        Text(DateFormat(
+                                                                'hh:mm a')
+                                                            .format(task
+                                                                .dateTime!)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : null,
+                                        trailing: IconButton(
+                                          icon: Icon(
+                                            task.isStarred ?? false
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            color: task.isStarred ?? false
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            taskProvider.toggleTaskStarred(
+                                                index, task);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),

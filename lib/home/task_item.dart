@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/home/task_data_class.dart';
+import 'package:task_app/task.dart';
 
 class TaskItem extends StatelessWidget {
   final Task task;
@@ -19,8 +19,8 @@ class TaskItem extends StatelessWidget {
         value: task.isCompleted,
         onChanged: onChanged,
       ),
-      title: Text(task.title),
-      subtitle: task.hasDateTime
+      title: Text(task.title!),
+      subtitle: task.dateTime!.isUtc
           ? const Row(
               children: [
                 Icon(Icons.calendar_today, size: 16, color: Colors.grey),
@@ -34,8 +34,8 @@ class TaskItem extends StatelessWidget {
             )
           : null,
       trailing: Icon(
-        task.isStarred ? Icons.star : Icons.star_border,
-        color: task.isStarred ? Colors.orange : Colors.grey,
+        task.isStarred! ? Icons.star : Icons.star_border,
+        color: task.isStarred! ? Colors.orange : Colors.grey,
       ),
     );
   }
