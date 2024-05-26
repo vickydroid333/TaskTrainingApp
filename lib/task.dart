@@ -8,7 +8,7 @@ class Task extends HiveObject {
   final String title;
 
   @HiveField(1)
-  final DateTime? dateTime;
+  DateTime? dateTime;
 
   @HiveField(2)
   bool? isStarred;

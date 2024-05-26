@@ -47,35 +47,57 @@ class TaskProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void addTask(Task task, [int? index]) {
-    if (index != null && index >= 0 && index < tasks.length) {
-      _taskBox?.putAt(index, task);
+  void addTask(Task task, [dynamic key]) {
+    if (key != null) {
+      _taskBox?.put(key, task);
     } else {
       _taskBox?.add(task);
     }
     notifyListeners();
   }
 
-  // If we can remove from my tasks tab and then add completed tasks tab.
   void toggleTaskCompletion(int index, Task task) {
     task.isCompleted = !(task.isCompleted ?? false);
-    _taskBox?.putAt(index, task);
+    _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
   void toggleTaskStarred(int index, Task task) {
     task.isStarred = !(task.isStarred ?? false);
-    _taskBox?.putAt(index, task);
+    _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
   void updateTask(int index, Task updatedTask) {
-    tasks[index] = updatedTask;
+    final key = _taskBox?.keyAt(index);
+    if (key != null) {
+      _taskBox?.put(key, updatedTask);
+    }
     notifyListeners();
   }
 
-  void removeTask(int index) {
-    tasks.removeAt(index);
+  void removeTask(dynamic key) {
+    _taskBox?.delete(key);
     notifyListeners();
+  }
+
+  void updateTaskDate(int index, DateTime dateTime) {
+    tasks[index].dateTime = dateTime;
+    _taskBox?.putAt(index, tasks[index]);
+    notifyListeners();
+  }
+
+  void removeTaskDate(int index) {
+    tasks[index].dateTime = null;
+    _taskBox?.putAt(index, tasks[index]);
+    notifyListeners();
+  }
+
+  dynamic getKeyAt(int index) {
+    return _taskBox?.keyAt(index);
+  }
+
+  int getTaskIndex(Task task) {
+    return _taskBox?.values.toList().indexOf(task) ?? -1;
   }
 }
