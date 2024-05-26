@@ -16,6 +16,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  bool _isStarred = false;
 
   @override
   void dispose() {
@@ -23,11 +24,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     super.dispose();
   }
 
-  String? validateText(String text) {
-    if (text.isEmpty) {
+  String? validateText(String? text) {
+    if (text == null || text.isEmpty) {
       return 'Please enter some text.';
     }
-    // Add more validation rules as needed
     return null;
   }
 
@@ -66,14 +66,21 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               border: InputBorder.none,
               hintStyle: TextStyle(color: Colors.grey),
             ),
-            validator: (value) => validateText(value!),
+            validator: (value) => validateText(value),
             autofocus: true,
           ),
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.star_border, color: Colors.grey),
-                onPressed: () {},
+                icon: Icon(
+                  _isStarred ? Icons.star : Icons.star_border,
+                  color: _isStarred ? Colors.amber : Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isStarred = !_isStarred;
+                  });
+                },
               ),
               IconButton(
                 icon: const Icon(Icons.access_time, color: Colors.grey),
@@ -101,6 +108,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     taskProvider.addTask(Task(
                       title: _taskTitleController.text,
                       dateTime: taskDateTime,
+                      isStarred: _isStarred,
                     ));
                     Navigator.pop(context);
                   }

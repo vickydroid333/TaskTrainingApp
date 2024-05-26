@@ -31,6 +31,7 @@ class _CompletedTasksState extends State<CompletedTasks> {
                 return ListTile(
                   hoverColor: Colors.white,
                   leading: Checkbox(
+                    activeColor: Colors.red,
                     value: task.isCompleted,
                     onChanged: (bool? value) {
                       if (value != null) {

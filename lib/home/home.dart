@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_app/home/completed_tasks.dart';
 import 'package:task_app/home/my_tasks.dart';
 import 'package:task_app/home/starred_tasks.dart';
 
 import '../add_task.dart';
+import '../task_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -99,31 +101,47 @@ class _MyHomePageState extends State<MyHomePage>
                   color: Colors.grey,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Today's Task",
+                        const Text("Today's Task",
                             style: TextStyle(color: Colors.grey)),
-                        SizedBox(height: 4),
-                        Text("3/8 completed",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        Consumer<TaskProvider>(
+                          builder: (context, taskProvider, child) {
+                            final completedTasks =
+                                taskProvider.completedTasks.length;
+                            final totalTasks = taskProvider.tasks.length;
+                            return Text(
+                              "$completedTasks/$totalTasks completed",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Total Task to be completed",
+                        const Text("Total Task to be completed",
                             style: TextStyle(color: Colors.grey)),
-                        SizedBox(height: 4),
-                        Text("16 tasks",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        Consumer<TaskProvider>(
+                            builder: (context, taskProvider, child) {
+                          final completedTasks =
+                              taskProvider.completedTasks.length;
+                          return Text(
+                            "$completedTasks tasks",
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          );
+                        })
                       ],
                     ),
                   ],

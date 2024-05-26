@@ -30,6 +30,7 @@ class _StarredTasksState extends State<StarredTasks> {
                 final task = completedTasks[index];
                 return ListTile(
                   leading: Checkbox(
+                    activeColor: Colors.red,
                     value: task.isCompleted,
                     onChanged: (bool? value) {
                       if (value != null) {
