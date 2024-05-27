@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>mobile/svg/cross</title>
+    <g id="mobile/svg/cross" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path" fill="#C1C1C1" fill-rule="nonzero" transform="translate(11.7083, 11.7083) rotate(45) translate(-11.7083, -11.7083)" points="19.2083333 12.7797619 12.7797619 12.7797619 12.7797619 19.2083333 10.6369048 19.2083333 10.6369048 12.7797619 4.20833333 12.7797619 4.20833333 10.6369048 10.6369048 10.6369048 10.6369048 4.20833333 12.7797619 4.20833333 12.7797619 10.6369048 19.2083333 10.6369048"></polygon>
+    </g>
+</svg>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>mobile/svg/timer</title>
+    <g id="mobile/svg/timer" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,3 C16.9705627,3 21,7.02943725 21,12 C21,16.9705627 16.9705627,21 12,21 C7.02943725,21 3,16.9705627 3,12 C3,7.02943725 7.02943725,3 12,3 Z M12,4.2 C7.69217895,4.2 4.2,7.69217895 4.2,12 C4.2,16.307821 7.69217895,19.8 12,19.8 C16.307821,19.8 19.8,16.307821 19.8,12 C19.8,9.93131138 18.9782166,7.94735086 17.5154329,6.48456711 C16.0526491,5.02178335 14.0686886,4.2 12,4.2 Z M12.6,7.2 L12.6,11.754 L15.396,14.544 L14.544,15.396 L11.574,12.426 C11.4616881,12.3127687 11.3990779,12.1594818 11.39999,12 L11.39999,7.2 L12.6,7.2 Z" id="Combined-Shape" stroke="#C8C8C8" stroke-width="0.514285714" fill="#C8C8C8" fill-rule="nonzero"></path>
+    </g>
+</svg>

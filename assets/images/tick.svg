@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>mobile/svg/tick</title>
+    <g id="mobile/svg/tick" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="24" height="24"></rect>
+        <polygon id="_Compound_Path_" fill="#000000" fill-rule="nonzero" points="5 12.7280231 6.37578125 11.2744532 9.99921875 15.0953364 18.6242188 6 20 7.45356995 12.8353623 15.0091147 9.99921875 18"></polygon>
+    </g>
+</svg>

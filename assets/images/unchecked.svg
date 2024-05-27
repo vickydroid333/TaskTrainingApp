@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>mobile/svg/emptybox</title>
+    <g id="mobile/svg/emptybox" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M16,4 C18.209139,4 20,5.790861 20,8 L20,16 C20,18.209139 18.209139,20 16,20 L8,20 C5.790861,20 4,18.209139 4,16 L4,8 C4,5.790861 5.790861,4 8,4 L16,4 Z M16,5 L8,5 C6.34314575,5 5,6.34314575 5,8 L5,16 C5,17.6568542 6.34314575,19 8,19 L16,19 C17.6568542,19 19,17.6568542 19,16 L19,8 C19,6.34314575 17.6568542,5 16,5 Z" id="Rectangle" fill="#E2E2E2" fill-rule="nonzero"></path>
+    </g>
+</svg>

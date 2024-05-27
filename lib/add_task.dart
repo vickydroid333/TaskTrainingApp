@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/task.dart';
@@ -39,7 +40,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       lastDate: DateTime(2101),
     );
 
-    if (pickedDate != null && pickedDate != _selectedDate) {
+    if (pickedDate != null) {
       TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
@@ -53,6 +54,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedTime = _selectedTime?.format(context);
     return Form(
       key: _formKey,
       child: Column(
@@ -71,24 +73,36 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           ),
           Row(
             children: [
-              IconButton(
-                icon: Icon(
-                  _isStarred ? Icons.star : Icons.star_border,
-                  color: _isStarred ? Colors.amber : Colors.grey,
-                ),
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   setState(() {
                     _isStarred = !_isStarred;
                   });
                 },
+                child: SvgPicture.asset(
+                  _isStarred
+                      ? 'assets/images/filledstar.svg'
+                      : 'assets/images/star.svg',
+                ),
               ),
-              IconButton(
-                icon: const Icon(Icons.access_time, color: Colors.grey),
-                onPressed: _pickDateTime,
+              const SizedBox(
+                width: 15,
               ),
-              if (_selectedDate != null)
-                Text(DateFormat('dd MMM, yyyy  |  ').format(_selectedDate!)),
-              if (_selectedTime != null) Text(_selectedTime!.format(context)),
+              GestureDetector(
+                onTap: () {
+                  _pickDateTime();
+                },
+                child: SvgPicture.asset(
+                  'assets/images/timer.svg',
+                ),
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              _selectedDate != null
+                  ? Text(DateFormat('dd MMM, yyyy').format(_selectedDate!))
+                  : const Text(''),
+              _selectedTime != null ? Text(' | $selectedTime') : const Text(''),
               const Spacer(),
               TextButton(
                 onPressed: () {
@@ -97,14 +111,23 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         Provider.of<TaskProvider>(context, listen: false);
                     DateTime? taskDateTime;
                     if (_selectedDate != null) {
-                      taskDateTime = DateTime(
-                        _selectedDate!.year,
-                        _selectedDate!.month,
-                        _selectedDate!.day,
-                        _selectedTime!.hour,
-                        _selectedTime!.minute,
-                      );
+                      if (_selectedTime != null) {
+                        taskDateTime = DateTime(
+                          _selectedDate!.year,
+                          _selectedDate!.month,
+                          _selectedDate!.day,
+                          _selectedTime!.hour,
+                          _selectedTime!.minute,
+                        );
+                      } else {
+                        taskDateTime = DateTime(
+                          _selectedDate!.year,
+                          _selectedDate!.month,
+                          _selectedDate!.day,
+                        );
+                      }
                     }
+
                     taskProvider.addTask(Task(
                       title: _taskTitleController.text,
                       dateTime: taskDateTime,
@@ -115,7 +138,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 },
                 child: const Text(
                   'Add Task',
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: Color(0xFFB13D3D), fontSize: 16),
                 ),
               ),
             ],

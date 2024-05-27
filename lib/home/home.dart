@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/home/completed_tasks.dart';
 import 'package:task_app/home/my_tasks.dart';
@@ -60,45 +61,56 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F2EB),
+      backgroundColor: const Color(0xFFEDE8E2),
       body: Stack(
         children: [
           Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 60, left: 20, right: 20),
+              Padding(
+                padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/images.jpg'),
-                      radius: 30,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: Image.asset(
+                        'assets/images/profile.jpg',
+                        width: 34,
+                        height: 34,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                    SizedBox(width: 16),
-                    Column(
+                    const SizedBox(width: 16),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Good day',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF303030),
+                          ),
                         ),
                         Text(
                           'Bernice Thompson!',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
-                    Spacer(),
-                    Icon(Icons.settings)
+                    const Spacer(),
+                    SvgPicture.asset(
+                      'assets/images/settings.svg',
+                      color: const Color(0xFF231F20),
+                    )
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Divider(
-                  color: Colors.grey,
+                  color: Colors.grey[300],
                 ),
               ),
               Padding(
@@ -110,7 +122,8 @@ class _MyHomePageState extends State<MyHomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Today's Task",
-                            style: TextStyle(color: Colors.grey)),
+                            style: TextStyle(
+                                color: Color(0xFF303030), fontSize: 12)),
                         const SizedBox(height: 4),
                         Consumer<TaskProvider>(
                           builder: (context, taskProvider, child) {
@@ -120,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage>
                             return Text(
                               "$completedTasks/$totalTasks completed",
                               style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 18, fontWeight: FontWeight.w600),
                             );
                           },
                         ),
@@ -130,7 +143,10 @@ class _MyHomePageState extends State<MyHomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Total Task to be completed",
-                            style: TextStyle(color: Colors.grey)),
+                            style: TextStyle(
+                              color: Color(0xFF303030),
+                              fontSize: 12,
+                            )),
                         const SizedBox(height: 4),
                         Consumer<TaskProvider>(
                             builder: (context, taskProvider, child) {
@@ -139,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage>
                           return Text(
                             "$completedTasks tasks",
                             style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           );
                         })
                       ],
@@ -159,23 +175,21 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
                   child: Column(
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(right: 16, left: 16, top: 8),
-                        child: TabBar(
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          controller: _tabController,
-                          indicatorColor: Colors.red,
-                          labelColor: Colors.black,
-                          dividerColor: Colors.white,
-                          unselectedLabelColor: Colors.grey,
-                          tabs: const [
-                            Tab(icon: Icon(Icons.star_border)),
-                            Tab(text: "My Tasks"),
-                            Tab(text: "Completed Tasks"),
-                          ],
-                        ),
+                      TabBar(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 16, top: 18, bottom: 0),
+                        isScrollable: true,
+                        tabAlignment: TabAlignment.start,
+                        controller: _tabController,
+                        indicatorColor: const Color(0xFFB13D3D),
+                        labelColor: Colors.black,
+                        dividerColor: Colors.white,
+                        unselectedLabelColor: Colors.grey,
+                        tabs: const [
+                          Tab(icon: Icon(Icons.star_border)),
+                          Tab(text: "My Tasks"),
+                          Tab(text: "Completed Tasks"),
+                        ],
                       ),
                       Expanded(
                         child: Padding(
@@ -183,9 +197,9 @@ class _MyHomePageState extends State<MyHomePage>
                           child: TabBarView(
                             controller: _tabController,
                             children: const [
+                              StarredTasks(),
                               MyTasks(),
-                              CompletedTasks(),
-                              StarredTasks()
+                              CompletedTasks()
                             ],
                           ),
                         ),
@@ -200,9 +214,12 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddTaskBottomSheet(context),
-        backgroundColor: Colors.red.shade100,
-        foregroundColor: Colors.red,
-        child: const Icon(Icons.add),
+        backgroundColor: const Color(0xFFFFE4E4),
+        child: SvgPicture.asset(
+          'assets/images/add.svg',
+          height: 28,
+          width: 28,
+        ),
       ),
     );
   }

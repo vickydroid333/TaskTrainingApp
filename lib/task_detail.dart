@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,32 +21,62 @@ class TaskDetailsPage extends StatefulWidget {
 }
 
 class _TaskDetailsPageState extends State<TaskDetailsPage> {
-  void _markTaskCompleted() async {
+  void _markTaskCompleted(BuildContext context) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     final task = widget.task;
     taskProvider.toggleTaskCompletion(widget.taskIndex, task);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            'Task marked as ${task.isCompleted! ? 'completed' : 'incomplete'}.'),
-        backgroundColor: Colors.black87,
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            taskProvider.toggleTaskCompletion(widget.taskIndex, task);
-          },
-          textColor: Colors.orange,
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom:
+            50.0, // Change this value to adjust the position from the bottom
+        left: 20.0,
+        right: 20.0,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Task ${task.isCompleted! ? 'Completed' : 'Incompleted'}.',
+                    style: const TextStyle(color: Colors.white, fontSize: 14)),
+                TextButton(
+                  onPressed: () {
+                    taskProvider.toggleTaskCompletion(widget.taskIndex, task);
+                    overlayEntry!.remove();
+                  },
+                  child: const Text(
+                    'UNDO',
+                    style: TextStyle(color: Color(0xFFFFC6C6), fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
+
+    overlayState.insert(overlayEntry);
+
+    // Remove the toast after a duration
+    Future.delayed(const Duration(seconds: 5), () {
+      overlayEntry!.remove();
+    });
   }
 
-  void _deleteTask() {
+  void _deleteTask(BuildContext context) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
 
     // Find the task index in the original task list
@@ -60,22 +91,50 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     taskProvider.removeTask(taskKey);
     Navigator.pop(context); // Pop back to the previous page
 
-    // Show custom snackbar with undo
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            const Text('Task deleted.', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.grey[800],
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            taskProvider.addTask(deletedTask, taskKey);
-          },
-          textColor: Colors.orange,
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom:
+            50.0, // Change this value to adjust the position from the bottom
+        left: 20.0,
+        right: 20.0,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Task deleted.',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                TextButton(
+                  onPressed: () {
+                    taskProvider.addTask(deletedTask, taskKey);
+                    overlayEntry!.remove();
+                  },
+                  child: const Text(
+                    'UNDO',
+                    style: TextStyle(color: Color(0xFFFFC6C6), fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
+
+    overlayState.insert(overlayEntry);
+
+    // Remove the toast after a duration
+    Future.delayed(const Duration(seconds: 5), () {
+      overlayEntry!.remove();
+    });
   }
 
   @override
@@ -85,24 +144,46 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: GestureDetector(
+            child: SvgPicture.asset('assets/images/backarrow.svg'),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Task Detail'),
+        centerTitle: true,
+        title: const Text(
+          'Task Detail',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         actions: [
-          IconButton(
-            icon: Icon(
-              widget.task.isStarred ?? false ? Icons.star : Icons.star_border,
-              color:
-                  widget.task.isStarred ?? false ? Colors.amber : Colors.grey,
-            ),
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               taskProvider.toggleTaskStarred(widget.taskIndex, widget.task);
             },
+            child: SvgPicture.asset(
+              widget.task.isStarred ?? false
+                  ? 'assets/images/filledstar.svg'
+                  : 'assets/images/star.svg',
+            ),
           ),
-          IconButton(icon: const Icon(Icons.delete), onPressed: _deleteTask)
+          const SizedBox(
+            width: 15,
+          ),
+          GestureDetector(
+            onTap: () {
+              _deleteTask(context);
+            },
+            child: SvgPicture.asset(
+              'assets/images/deletebin.svg',
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          )
         ],
       ),
       body: Container(
@@ -119,24 +200,39 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               const SizedBox(height: 16),
               if (widget.task.dateTime != null)
                 Container(
-                  padding: const EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8.0),
+                    color: const Color(0xFFF6F6F6),
+                    borderRadius: BorderRadius.circular(4.0),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.calendar_today, color: Colors.grey),
+                      SvgPicture.asset(
+                        'assets/images/calender.svg',
+                        height: 16,
+                        width: 16,
+                      ),
                       const SizedBox(width: 8),
                       Text(
-                        DateFormat('dd MMM, yyyy  |  hh:mm a')
-                            .format(widget.task.dateTime!),
+                        widget.task.dateTime!.hour != 0 ||
+                                widget.task.dateTime!.minute != 0
+                            ? DateFormat('dd MMM, yyyy  |  hh:mm a')
+                                .format(widget.task.dateTime!)
+                            : DateFormat('dd MMM, yyyy')
+                                .format(widget.task.dateTime!),
+                        style: const TextStyle(fontSize: 13),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.grey),
-                        onPressed: () =>
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () =>
                             taskProvider.removeTaskDate(widget.taskIndex),
+                        child: SvgPicture.asset(
+                          'assets/images/cross.svg',
+                          height: 19,
+                          width: 19,
+                          color: const Color(0xFF000000),
+                        ),
                       ),
                     ],
                   ),
@@ -144,9 +240,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               const Spacer(),
               SizedBox(
                 width: double.infinity,
+                height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    _markTaskCompleted();
+                    _markTaskCompleted(context);
                     Navigator.pop(context);
                   },
                   icon: const Icon(
@@ -163,8 +260,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: const Color(0xFFB13D3D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           10), // Adjust the radius as needed

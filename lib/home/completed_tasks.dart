@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,82 +21,15 @@ class _CompletedTasksState extends State<CompletedTasks> {
         color: Colors.white,
         child: Consumer<TaskProvider>(
           builder: (context, taskProvider, _) {
-            final tasks = taskProvider.tasks;
-            if (tasks.isEmpty) {
-              return const Center(child: Text('No tasks available'));
+            final completedTasks = taskProvider.completedTasks;
+            if (completedTasks.isEmpty) {
+              return const Center(child: Text('No completed tasks available'));
             }
             return ListView.builder(
-              itemCount: tasks.length,
+              itemCount: completedTasks.length,
               itemBuilder: (context, index) {
-                final task = tasks[index];
-                return ListTile(
-                  hoverColor: Colors.white,
-                  leading: Checkbox(
-                    activeColor: Colors.red,
-                    value: task.isCompleted,
-                    onChanged: (bool? value) {
-                      if (value != null) {
-                        taskProvider.toggleTaskCompletion(index, task);
-                      }
-                    },
-                  ),
-                  title: Text(task.title),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
-                  subtitle: task.dateTime != null
-                      ? Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.calendar_today,
-                                    size: 16.0,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(width: 4.0),
-                                  Text(DateFormat('dd MMM, yyyy')
-                                      .format(task.dateTime!)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            Container(
-                              padding: const EdgeInsets.all(6.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.access_time,
-                                    size: 16.0,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(width: 4.0),
-                                  Text(DateFormat('hh:mm a')
-                                      .format(task.dateTime!)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      : null,
-                  trailing: IconButton(
-                    icon: Icon(
-                      task.isStarred ?? false ? Icons.star : Icons.star_border,
-                      color:
-                          task.isStarred ?? false ? Colors.amber : Colors.grey,
-                    ),
-                    onPressed: () {
-                      taskProvider.toggleTaskStarred(index, task);
-                    },
-                  ),
+                final task = completedTasks[index];
+                return InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -105,6 +39,97 @@ class _CompletedTasksState extends State<CompletedTasks> {
                       ),
                     );
                   },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            taskProvider.toggleTaskCompletion(index, task);
+                          },
+                          child: SvgPicture.asset(
+                            task.isCompleted ?? false
+                                ? 'assets/images/checked.svg'
+                                : 'assets/images/unchecked.svg',
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(task.title,
+                                  style: const TextStyle(fontSize: 14)),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              if (task.dateTime != null)
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFF6F6F6),
+                                        borderRadius:
+                                            BorderRadius.circular(4.0),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/calender.svg',
+                                            height: 16,
+                                            width: 16,
+                                          ),
+                                          const SizedBox(width: 4.0),
+                                          Text(DateFormat('dd MMM, yyyy')
+                                              .format(task.dateTime!)),
+                                        ],
+                                      ),
+                                    ),
+                                    if (task.dateTime!.hour != 0 ||
+                                        task.dateTime!.minute != 0) ...[
+                                      const SizedBox(width: 8.0),
+                                      Container(
+                                        padding: const EdgeInsets.all(6.0),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF6F6F6),
+                                          borderRadius:
+                                              BorderRadius.circular(4.0),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/images/timer.svg',
+                                              height: 16,
+                                              width: 16,
+                                              color: const Color(0xFF5A5A5A),
+                                            ),
+                                            const SizedBox(width: 4.0),
+                                            Text(DateFormat('hh:mm a')
+                                                .format(task.dateTime!)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            taskProvider.toggleTaskStarred(index, task);
+                          },
+                          child: SvgPicture.asset(
+                            task.isStarred ?? false
+                                ? 'assets/images/filledstar.svg'
+                                : 'assets/images/star.svg',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             );
