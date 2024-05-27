@@ -86,7 +86,7 @@ class _CompletedTasksState extends State<CompletedTasks> {
               return const Center(
                   child: Text('No completed tasks available',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 14,
                           fontFamily: 'SFProDisplay',
                           fontWeight: FontWeight.normal)));

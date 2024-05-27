@@ -26,7 +26,7 @@ class _StarredTasksState extends State<StarredTasks> {
               return const Center(
                 child: Text('No starred tasks available',
                     style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 14,
                         fontFamily: 'SFProDisplay',
                         fontWeight: FontWeight.normal)),

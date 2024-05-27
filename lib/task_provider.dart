@@ -24,7 +24,6 @@ class TaskProvider extends ChangeNotifier {
     if (_taskBox == null) {
       return [];
     }
-    // Retrieve incomplete tasks in reverse order to show the newest task first
     return _taskBox!.values
         .where((task) => task.isCompleted != true)
         .toList()
@@ -104,15 +103,14 @@ class TaskProvider extends ChangeNotifier {
   }
 
   dynamic getKeyAt(int index) {
-    final tasksList = tasks;
+    final tasksList = _taskBox?.values.toList() ?? [];
     if (index >= 0 && index < tasksList.length) {
-      return _taskBox
-          ?.keyAt(_taskBox!.values.toList().indexOf(tasksList[index]));
+      return _taskBox?.keyAt(index);
     }
     return null;
   }
 
   int getTaskIndex(Task task) {
-    return tasks.indexOf(task);
+    return _taskBox?.values.toList().indexOf(task) ?? -1;
   }
 }

@@ -86,23 +86,22 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     OverlayEntry? overlayEntry;
 
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-
-    // Find the task index in the original task list
     final taskIndex = taskProvider.getTaskIndex(widget.task);
 
     if (taskIndex == -1) return; // Task not found
 
-    final deletedTask = taskProvider.tasks[taskIndex];
+    final deletedTask = widget.task;
     final taskKey = taskProvider.getKeyAt(taskIndex);
 
-    // Remove task from Hive box
+    // Check if taskKey is valid before proceeding
+    if (taskKey == null) return;
+
     taskProvider.removeTask(taskKey);
     Navigator.pop(context); // Pop back to the previous page
 
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        bottom:
-            50.0, // Change this value to adjust the position from the bottom
+        bottom: 50.0,
         left: 20.0,
         right: 20.0,
         child: Material(
@@ -147,7 +146,6 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
     overlayState.insert(overlayEntry);
 
-    // Remove the toast after a duration
     Future.delayed(const Duration(seconds: 5), () {
       overlayEntry!.remove();
     });
