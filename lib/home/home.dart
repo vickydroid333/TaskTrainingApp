@@ -86,24 +86,24 @@ class _MyHomePageState extends State<MyHomePage>
                         Text(
                           'Good day',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF303030),
-                          ),
+                              fontSize: 12,
+                              color: Color(0xFF303030),
+                              fontFamily: 'SFProDisplay',
+                              fontWeight: FontWeight.normal),
                         ),
                         Text(
                           'Bernice Thompson!',
                           style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              fontSize: 14,
+                              fontFamily: 'SFProDisplay',
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
                     const Spacer(),
-                    SvgPicture.asset(
-                      'assets/images/settings.svg',
-                      color: const Color(0xFF231F20),
-                    )
+                    SvgPicture.asset('assets/images/settings.svg',
+                        colorFilter: const ColorFilter.mode(
+                            Color(0xFF231F20), BlendMode.srcIn))
                   ],
                 ),
               ),
@@ -123,7 +123,10 @@ class _MyHomePageState extends State<MyHomePage>
                       children: [
                         const Text("Today's Task",
                             style: TextStyle(
-                                color: Color(0xFF303030), fontSize: 12)),
+                                color: Color(0xFF303030),
+                                fontSize: 12,
+                                fontFamily: 'SFProDisplay',
+                                fontWeight: FontWeight.normal)),
                         const SizedBox(height: 4),
                         Consumer<TaskProvider>(
                           builder: (context, taskProvider, child) {
@@ -133,7 +136,9 @@ class _MyHomePageState extends State<MyHomePage>
                             return Text(
                               "$completedTasks/$totalTasks completed",
                               style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'SFProDisplay'),
                             );
                           },
                         ),
@@ -144,9 +149,10 @@ class _MyHomePageState extends State<MyHomePage>
                       children: [
                         const Text("Total Task to be completed",
                             style: TextStyle(
-                              color: Color(0xFF303030),
-                              fontSize: 12,
-                            )),
+                                color: Color(0xFF303030),
+                                fontSize: 12,
+                                fontFamily: 'SFProDisplay',
+                                fontWeight: FontWeight.normal)),
                         const SizedBox(height: 4),
                         Consumer<TaskProvider>(
                             builder: (context, taskProvider, child) {
@@ -155,7 +161,9 @@ class _MyHomePageState extends State<MyHomePage>
                           return Text(
                             "$completedTasks tasks",
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'SFProDisplay'),
                           );
                         })
                       ],
@@ -186,10 +194,19 @@ class _MyHomePageState extends State<MyHomePage>
                         dividerColor: Colors.white,
                         unselectedLabelColor: Colors.grey,
                         indicatorSize: TabBarIndicatorSize.tab,
-                        labelStyle: const TextStyle(fontSize: 14.0),
+                        labelStyle: const TextStyle(
+                            fontSize: 14.0,
+                            fontFamily: 'SFProDisplay',
+                            fontWeight: FontWeight.w600),
+                        unselectedLabelStyle: const TextStyle(
+                            fontSize: 14.0,
+                            fontFamily: 'SFProDisplay',
+                            fontWeight: FontWeight.normal),
                         tabs: const [
                           Tab(icon: Icon(Icons.star_border)),
-                          Tab(text: "My Tasks"),
+                          Tab(
+                            text: "My Tasks",
+                          ),
                           Tab(text: "Completed Tasks"),
                         ],
                       ),
@@ -219,8 +236,6 @@ class _MyHomePageState extends State<MyHomePage>
         backgroundColor: const Color(0xFFFFE4E4),
         child: SvgPicture.asset(
           'assets/images/add.svg',
-          height: 28,
-          width: 28,
         ),
       ),
     );

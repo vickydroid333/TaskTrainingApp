@@ -40,7 +40,11 @@ class _CompletedTasksState extends State<CompletedTasks> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Task ${task.isCompleted! ? 'Completed' : 'Incompleted'}.',
-                    style: const TextStyle(color: Colors.white, fontSize: 14)),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.normal)),
                 TextButton(
                   onPressed: () {
                     taskProvider.toggleTaskCompletion(task);
@@ -48,7 +52,11 @@ class _CompletedTasksState extends State<CompletedTasks> {
                   },
                   child: const Text(
                     'UNDO',
-                    style: TextStyle(color: Color(0xFFFFC6C6), fontSize: 14),
+                    style: TextStyle(
+                        color: Color(0xFFFFC6C6),
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -75,7 +83,13 @@ class _CompletedTasksState extends State<CompletedTasks> {
           builder: (context, taskProvider, _) {
             final completedTasks = taskProvider.completedTasks;
             if (completedTasks.isEmpty) {
-              return const Center(child: Text('No completed tasks available'));
+              return const Center(
+                  child: Text('No completed tasks available',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'SFProDisplay',
+                          fontWeight: FontWeight.normal)));
             }
             return ListView.builder(
               itemCount: completedTasks.length,
@@ -110,7 +124,10 @@ class _CompletedTasksState extends State<CompletedTasks> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(task.title,
-                                  style: const TextStyle(fontSize: 14)),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'SFProDisplay',
+                                      fontWeight: FontWeight.normal)),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -132,8 +149,14 @@ class _CompletedTasksState extends State<CompletedTasks> {
                                             width: 16,
                                           ),
                                           const SizedBox(width: 4.0),
-                                          Text(DateFormat('dd MMM, yyyy')
-                                              .format(task.dateTime!)),
+                                          Text(
+                                              DateFormat('dd MMM, yyyy')
+                                                  .format(task.dateTime!),
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontFamily: 'SFProDisplay',
+                                                  fontWeight:
+                                                      FontWeight.normal)),
                                         ],
                                       ),
                                     ),
@@ -150,14 +173,22 @@ class _CompletedTasksState extends State<CompletedTasks> {
                                         child: Row(
                                           children: [
                                             SvgPicture.asset(
-                                              'assets/images/timer.svg',
-                                              height: 16,
-                                              width: 16,
-                                              color: const Color(0xFF5A5A5A),
-                                            ),
+                                                'assets/images/timer.svg',
+                                                height: 16,
+                                                width: 16,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                        Color(0xFF5A5A5A),
+                                                        BlendMode.srcIn)),
                                             const SizedBox(width: 4.0),
-                                            Text(DateFormat('hh:mm a')
-                                                .format(task.dateTime!)),
+                                            Text(
+                                                DateFormat('hh:mm a')
+                                                    .format(task.dateTime!),
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'SFProDisplay',
+                                                    fontWeight:
+                                                        FontWeight.normal)),
                                           ],
                                         ),
                                       ),

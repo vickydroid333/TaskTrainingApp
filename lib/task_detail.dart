@@ -47,7 +47,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Task ${task.isCompleted! ? 'Completed' : 'Incompleted'}.',
-                    style: const TextStyle(color: Colors.white, fontSize: 14)),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.normal)),
                 TextButton(
                   onPressed: () {
                     taskProvider.toggleTaskCompletion(task);
@@ -55,7 +59,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   },
                   child: const Text(
                     'UNDO',
-                    style: TextStyle(color: Color(0xFFFFC6C6), fontSize: 14),
+                    style: TextStyle(
+                        color: Color(0xFFFFC6C6),
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -110,7 +118,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               children: [
                 const Text(
                   'Task deleted.',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'SFProDisplay',
+                      fontWeight: FontWeight.normal),
                 ),
                 TextButton(
                   onPressed: () {
@@ -119,7 +131,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   },
                   child: const Text(
                     'UNDO',
-                    style: TextStyle(color: Color(0xFFFFC6C6), fontSize: 14),
+                    style: TextStyle(
+                        color: Color(0xFFFFC6C6),
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -155,9 +171,9 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
         title: const Text(
           'Task Detail',
           style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'SFProDisplay'),
         ),
         actions: [
           GestureDetector(
@@ -195,7 +211,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             children: [
               Text(
                 widget.task.title,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'SFProDisplay',
+                    fontWeight: FontWeight.normal),
               ),
               const SizedBox(height: 16),
               if (widget.task.dateTime != null)
@@ -221,7 +240,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                                 .format(widget.task.dateTime!)
                             : DateFormat('dd MMM, yyyy')
                                 .format(widget.task.dateTime!),
-                        style: const TextStyle(fontSize: 13),
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'SFProDisplay',
+                            fontWeight: FontWeight.normal),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
@@ -230,7 +252,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                           'assets/images/cross.svg',
                           height: 19,
                           width: 19,
-                          color: const Color(0xFF000000),
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black54, BlendMode.srcIn),
                         ),
                       ),
                     ],
@@ -252,11 +275,19 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   label: widget.task.isCompleted ?? false
                       ? const Text(
                           'Mark InCompleted',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'SFProDisplay',
+                              fontWeight: FontWeight.w600),
                         )
                       : const Text(
                           'Mark Completed',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'SFProDisplay',
+                              fontWeight: FontWeight.w600),
                         ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFB13D3D),

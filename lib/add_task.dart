@@ -66,7 +66,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
             decoration: const InputDecoration(
               hintText: 'New Task...',
               border: InputBorder.none,
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontFamily: 'SFProDisplay',
+                  fontWeight: FontWeight.normal),
             ),
             validator: (value) => validateText(value),
             autofocus: true,
@@ -100,9 +104,19 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 width: 15,
               ),
               _selectedDate != null
-                  ? Text(DateFormat('dd MMM, yyyy').format(_selectedDate!))
+                  ? Text(DateFormat('dd MMM, yyyy').format(_selectedDate!),
+                      style: const TextStyle(
+                          fontSize: 13,
+                          fontFamily: 'SFProDisplay',
+                          fontWeight: FontWeight.normal))
                   : const Text(''),
-              _selectedTime != null ? Text(' | $selectedTime') : const Text(''),
+              _selectedTime != null
+                  ? Text(' | $selectedTime',
+                      style: const TextStyle(
+                          fontSize: 13,
+                          fontFamily: 'SFProDisplay',
+                          fontWeight: FontWeight.normal))
+                  : const Text(''),
               const Spacer(),
               TextButton(
                 onPressed: () {
@@ -138,7 +152,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 },
                 child: const Text(
                   'Add Task',
-                  style: TextStyle(color: Color(0xFFB13D3D), fontSize: 16),
+                  style: TextStyle(
+                      color: Color(0xFFB13D3D),
+                      fontSize: 16,
+                      fontFamily: 'SFProDisplay',
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ],

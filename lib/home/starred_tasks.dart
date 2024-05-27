@@ -24,7 +24,12 @@ class _StarredTasksState extends State<StarredTasks> {
             final tasks = taskProvider.starredTasks;
             if (tasks.isEmpty) {
               return const Center(
-                child: Text('No starred tasks available'),
+                child: Text('No starred tasks available',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'SFProDisplay',
+                        fontWeight: FontWeight.normal)),
               );
             }
             return ListView.builder(
@@ -62,7 +67,10 @@ class _StarredTasksState extends State<StarredTasks> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(task.title,
-                                  style: const TextStyle(fontSize: 14)),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'SFProDisplay',
+                                      fontWeight: FontWeight.normal)),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -84,8 +92,14 @@ class _StarredTasksState extends State<StarredTasks> {
                                             width: 16,
                                           ),
                                           const SizedBox(width: 4.0),
-                                          Text(DateFormat('dd MMM, yyyy')
-                                              .format(task.dateTime!)),
+                                          Text(
+                                              DateFormat('dd MMM, yyyy')
+                                                  .format(task.dateTime!),
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontFamily: 'SFProDisplay',
+                                                  fontWeight:
+                                                      FontWeight.normal)),
                                         ],
                                       ),
                                     ),
@@ -102,14 +116,22 @@ class _StarredTasksState extends State<StarredTasks> {
                                         child: Row(
                                           children: [
                                             SvgPicture.asset(
-                                              'assets/images/timer.svg',
-                                              height: 16,
-                                              width: 16,
-                                              color: const Color(0xFF5A5A5A),
-                                            ),
+                                                'assets/images/timer.svg',
+                                                height: 16,
+                                                width: 16,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                        Color(0xFF5A5A5A),
+                                                        BlendMode.srcIn)),
                                             const SizedBox(width: 4.0),
-                                            Text(DateFormat('hh:mm a')
-                                                .format(task.dateTime!)),
+                                            Text(
+                                                DateFormat('hh:mm a')
+                                                    .format(task.dateTime!),
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'SFProDisplay',
+                                                    fontWeight:
+                                                        FontWeight.normal)),
                                           ],
                                         ),
                                       ),
