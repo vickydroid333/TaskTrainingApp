@@ -27,7 +27,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     final task = widget.task;
-    taskProvider.toggleTaskCompletion(widget.taskIndex, task);
+    taskProvider.toggleTaskCompletion(task);
 
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
@@ -50,7 +50,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                     style: const TextStyle(color: Colors.white, fontSize: 14)),
                 TextButton(
                   onPressed: () {
-                    taskProvider.toggleTaskCompletion(widget.taskIndex, task);
+                    taskProvider.toggleTaskCompletion(task);
                     overlayEntry!.remove();
                   },
                   child: const Text(
@@ -162,7 +162,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
         actions: [
           GestureDetector(
             onTap: () {
-              taskProvider.toggleTaskStarred(widget.taskIndex, widget.task);
+              taskProvider.toggleTaskStarred(widget.task);
             },
             child: SvgPicture.asset(
               widget.task.isStarred ?? false
@@ -225,8 +225,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
-                        onTap: () =>
-                            taskProvider.removeTaskDate(widget.taskIndex),
+                        onTap: () => taskProvider.removeTaskDate(widget.task),
                         child: SvgPicture.asset(
                           'assets/images/cross.svg',
                           height: 19,

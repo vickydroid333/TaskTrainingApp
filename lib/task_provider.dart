@@ -24,21 +24,34 @@ class TaskProvider extends ChangeNotifier {
     if (_taskBox == null) {
       return [];
     }
-    return _taskBox!.values.toList();
+    // Retrieve incomplete tasks in reverse order to show the newest task first
+    return _taskBox!.values
+        .where((task) => task.isCompleted != true)
+        .toList()
+        .reversed
+        .toList();
   }
 
   List<Task> get completedTasks {
     if (_taskBox == null) {
       return [];
     }
-    return _taskBox!.values.where((task) => task.isCompleted == true).toList();
+    return _taskBox!.values
+        .where((task) => task.isCompleted == true)
+        .toList()
+        .reversed
+        .toList();
   }
 
   List<Task> get starredTasks {
     if (_taskBox == null) {
       return [];
     }
-    return _taskBox!.values.where((task) => task.isStarred == true).toList();
+    return _taskBox!.values
+        .where((task) => task.isStarred == true)
+        .toList()
+        .reversed
+        .toList();
   }
 
   @override
@@ -56,23 +69,20 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTaskCompletion(int index, Task task) {
+  void toggleTaskCompletion(Task task) {
     task.isCompleted = !(task.isCompleted ?? false);
     _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
-  void toggleTaskStarred(int index, Task task) {
+  void toggleTaskStarred(Task task) {
     task.isStarred = !(task.isStarred ?? false);
     _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
-  void updateTask(int index, Task updatedTask) {
-    final key = _taskBox?.keyAt(index);
-    if (key != null) {
-      _taskBox?.put(key, updatedTask);
-    }
+  void updateTask(Task updatedTask) {
+    _taskBox?.put(updatedTask.key, updatedTask);
     notifyListeners();
   }
 
@@ -81,23 +91,28 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTaskDate(int index, DateTime dateTime) {
-    tasks[index].dateTime = dateTime;
-    _taskBox?.putAt(index, tasks[index]);
+  void updateTaskDate(Task task, DateTime dateTime) {
+    task.dateTime = dateTime;
+    _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
-  void removeTaskDate(int index) {
-    tasks[index].dateTime = null;
-    _taskBox?.putAt(index, tasks[index]);
+  void removeTaskDate(Task task) {
+    task.dateTime = null;
+    _taskBox?.put(task.key, task);
     notifyListeners();
   }
 
   dynamic getKeyAt(int index) {
-    return _taskBox?.keyAt(index);
+    final tasksList = tasks;
+    if (index >= 0 && index < tasksList.length) {
+      return _taskBox
+          ?.keyAt(_taskBox!.values.toList().indexOf(tasksList[index]));
+    }
+    return null;
   }
 
   int getTaskIndex(Task task) {
-    return _taskBox?.values.toList().indexOf(task) ?? -1;
+    return tasks.indexOf(task);
   }
 }

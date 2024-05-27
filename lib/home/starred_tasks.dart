@@ -48,7 +48,7 @@ class _StarredTasksState extends State<StarredTasks> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            taskProvider.toggleTaskCompletion(index, task);
+                            taskProvider.toggleTaskCompletion(task);
                           },
                           child: SvgPicture.asset(
                             task.isCompleted ?? false
@@ -121,7 +121,7 @@ class _StarredTasksState extends State<StarredTasks> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            taskProvider.toggleTaskStarred(index, task);
+                            taskProvider.toggleTaskStarred(task);
                           },
                           child: SvgPicture.asset(
                             task.isStarred ?? false

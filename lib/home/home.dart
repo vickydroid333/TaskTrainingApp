@@ -177,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage>
                     children: [
                       TabBar(
                         padding: const EdgeInsets.only(
-                            left: 20, right: 16, top: 18, bottom: 0),
+                            left: 20, right: 16, top: 12, bottom: 0),
                         isScrollable: true,
                         tabAlignment: TabAlignment.start,
                         controller: _tabController,
@@ -185,6 +185,8 @@ class _MyHomePageState extends State<MyHomePage>
                         labelColor: Colors.black,
                         dividerColor: Colors.white,
                         unselectedLabelColor: Colors.grey,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelStyle: const TextStyle(fontSize: 14.0),
                         tabs: const [
                           Tab(icon: Icon(Icons.star_border)),
                           Tab(text: "My Tasks"),
